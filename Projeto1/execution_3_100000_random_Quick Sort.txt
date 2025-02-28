@@ -1,0 +1,1 @@
+{'execucao': 3, 'quantidade': 100000, 'ordem': 'random', 'tipo_algoritimo': 'Quick Sort', 'inicio': 1740769207.0414515, 'fim': 1740769208.6198173, 'tempo': 1.5783658027648926}

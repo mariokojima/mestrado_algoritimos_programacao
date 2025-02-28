@@ -1,0 +1,1 @@
+{'execucao': 2, 'quantidade': 1000, 'ordem': 'desc', 'tipo_algoritimo': 'Insertion Sort', 'inicio': 1740761532.528392, 'fim': 1740761532.551082, 'tempo': 0.0226898193359375}

@@ -1,0 +1,1 @@
+{'execucao': 3, 'quantidade': 1000, 'ordem': 'desc', 'tipo_algoritimo': 'Bubble Sort', 'inicio': 1740768165.1130667, 'fim': 1740768165.1458006, 'tempo': 0.032733917236328125}

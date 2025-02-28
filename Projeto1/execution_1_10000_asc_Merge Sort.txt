@@ -1,0 +1,1 @@
+{'execucao': 1, 'quantidade': 10000, 'ordem': 'asc', 'tipo_algoritimo': 'Merge Sort', 'inicio': 1740704620.2852507, 'fim': 1740704620.2956352, 'tempo': 0.010384559631347656}

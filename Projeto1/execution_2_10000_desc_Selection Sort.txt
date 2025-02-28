@@ -1,0 +1,1 @@
+{'execucao': 2, 'quantidade': 10000, 'ordem': 'desc', 'tipo_algoritimo': 'Selection Sort', 'inicio': 1740761549.3938859, 'fim': 1740761550.467424, 'tempo': 1.073538064956665}
