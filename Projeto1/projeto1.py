@@ -193,31 +193,49 @@ def plot_comparison(csv_file):
         return
     for qtd in quantidades:
         df_aux = df[df['quantidade'] == qtd]
-        print(df_aux)
+        df_aux = df_aux.drop(columns=['quantidade', 'Unnamed: 3'])
+        print(qtd)
+        for ordem in ordenacao:
+        #     print(ordem)
+        #     df_aux = df_aux[df_aux['ordenacao'].str.contains(ordem)]
+            df_aux2 = df_aux[df_aux['ordenacao'].str.contains(ordem)].sort_values(by=['tempo'], ascending=True)
+            
+            print(df_aux2)
+            df_aux2 = df_aux[df_aux['ordenacao'].str.contains(ordem)].sort_values(by=['tempo'], ascending=False)
+
+            # inicio grafico
+            # Configurações do gráfico
+            plt.figure(figsize=(20, 6))
+            plt.xlabel('Algoritmo')
+            plt.ylabel('tempo')
+            plt.title(f'Comparação {qtd} - {ordem}')
+            plt.xticks(rotation=45, ha='right')
+            ax = plt.gca()
+            df_aux2.plot(kind='barh', alpha=0.75, ax=ax, rot=0, x='ordenacao', y='tempo')
+
+            plt.show()
+            # fim grafico
+    
+    # # Plotando a comparação de tempo vs quantidade
+    # for ordenacao in df['ordenacao'].unique():
+    #     # Filtra os dados para cada tipo de ordenação
+    #     data = df[df['ordenacao'] == ordenacao]
         
-    # Configurações do gráfico
-    plt.figure(figsize=(10, 6))
+    #     # Plotando o gráfico para o tipo de ordenação específico
+    #     plt.plot(data['quantidade'], data['tempo'], label=ordenacao, marker='o', linestyle='-', markersize=5)
     
-    # Plotando a comparação de tempo vs quantidade
-    for ordenacao in df['ordenacao'].unique():
-        # Filtra os dados para cada tipo de ordenação
-        data = df[df['ordenacao'] == ordenacao]
-        
-        # Plotando o gráfico para o tipo de ordenação específico
-        plt.plot(data['quantidade'], data['tempo'], label=ordenacao, marker='o', linestyle='-', markersize=5)
+    # # Adiciona título e labels aos eixos
+    # plt.title(f'Comparação entre tipos de busca -  Execução {execution}')
+    # plt.xlabel('Quantidade de Registros')
+    # plt.ylabel('Tempo de Execução (em segundos)')
     
-    # Adiciona título e labels aos eixos
-    plt.title(f'Comparação entre tipos de busca -  Execução {execution}')
-    plt.xlabel('Quantidade de Registros')
-    plt.ylabel('Tempo de Execução (em segundos)')
+    # # Adiciona legenda
+    # plt.legend(title='Tipo de Ordenação')
     
-    # Adiciona legenda
-    plt.legend(title='Tipo de Ordenação')
-    
-    # Exibe o gráfico
-    plt.grid(True)
-    plt.tight_layout()
-    plt.show()
+    # # Exibe o gráfico
+    # plt.grid(True)
+    # plt.tight_layout()
+    # plt.show()
 
 
 
