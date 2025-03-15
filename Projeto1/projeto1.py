@@ -4,7 +4,21 @@ import matplotlib.pyplot as plt
 import sys
 import os
 import pathlib
+import json
+from pathlib import Path
+import pandas as pd
 
+# variavaies
+quantidades = [1000,10000,100000]
+ordenacao = ["asc","random","desc"]
+sort_name=[
+        "Bubble Sort",
+        "Optimized Bubble Sort",
+        "Selection Sort",
+        "Insertion Sort",
+        "Merge Sort",
+        "Quick Sort"
+    ]
 # variavel de controle de execução
 execution = 3
 
@@ -139,7 +153,7 @@ def evaluate_sorting_algorithms(quantidades, ordenacao):
             ("Quick Sort", quick_sort),
         ]:
             print(sort_name)
-            nome_arquivo = f"./execution_{str(execution)}_{str(quantidade)}_{order}_{sort_name}.txt"
+            nome_arquivo = f"./executions/execution_{str(execution)}_{str(quantidade)}_{order}_{sort_name}.txt"
             arquivo = pathlib.Path(nome_arquivo)
             if arquivo.exists():
                 print('algoritimo já processado')
@@ -162,40 +176,147 @@ def evaluate_sorting_algorithms(quantidades, ordenacao):
                     "tempo":results[quantidade][order][sort_name]
                 }
                 # grava resultado em arquivo
-                with open(f"execution_{str(execution)}_{str(quantidade)}_{order}_{sort_name}.txt", "a") as myfile:
+                with open(f"executions/execution_{str(execution)}_{str(quantidade)}_{order}_{sort_name}.txt", "a") as myfile:
                     myfile.write(f'{str(log)}')
                     
                 
   return results
 
-
-def plot_results(results):
-  for quantidade in results:
-    plt.figure(figsize=(12, 6))
-    plt.title(f"Comparação de algoritmos de ordenação - {quantidade} elementos")
-    for order in results[quantidade]:
-        y_pos = range(len(results[quantidade][order]))
-        performance = list(results[quantidade][order].values())
-        algoritmos = list(results[quantidade][order].keys())
-
-        plt.barh(y_pos, performance, label=order)
-        plt.yticks(y_pos, algoritmos)
-        plt.xlabel("Tempo de execução (segundos)")
-        plt.ylabel("Algoritmos de ordenação")
-
-    plt.legend()
+# Função para ler o arquivo CSV e plotar o gráfico
+def plot_comparison(csv_file):
+    # Lê o arquivo CSV
+    df = pd.read_csv(csv_file, delimiter=';')
+    
+    # Verifica se o arquivo contém as colunas esperadas
+    if not all(col in df.columns for col in ['ordenacao', 'tempo', 'quantidade']):
+        print("O arquivo CSV não possui as colunas esperadas.")
+        return
+    for qtd in quantidades:
+        df_aux = df[df['quantidade'] == qtd]
+        print(df_aux)
+        
+    # Configurações do gráfico
+    plt.figure(figsize=(10, 6))
+    
+    # Plotando a comparação de tempo vs quantidade
+    for ordenacao in df['ordenacao'].unique():
+        # Filtra os dados para cada tipo de ordenação
+        data = df[df['ordenacao'] == ordenacao]
+        
+        # Plotando o gráfico para o tipo de ordenação específico
+        plt.plot(data['quantidade'], data['tempo'], label=ordenacao, marker='o', linestyle='-', markersize=5)
+    
+    # Adiciona título e labels aos eixos
+    plt.title(f'Comparação entre tipos de busca -  Execução {execution}')
+    plt.xlabel('Quantidade de Registros')
+    plt.ylabel('Tempo de Execução (em segundos)')
+    
+    # Adiciona legenda
+    plt.legend(title='Tipo de Ordenação')
+    
+    # Exibe o gráfico
+    plt.grid(True)
     plt.tight_layout()
     plt.show()
 
 
 
+def load_executions(quantidades, ordenacao, sort_name):
+    resultados = []
+    ord = []
+
+    # Definindo o caminho do arquivo a ser deletado
+    caminho_arquivo = Path(f"result{execution}.csv")
+
+    # Deletando o arquivo
+    if caminho_arquivo.exists():
+        caminho_arquivo.unlink()
+        print('Arquivo deletado com sucesso!')
+    else:
+        print('Arquivo não encontrado.')
+
+
+    with open(f"result{execution}.csv", "a") as myfile:
+        myfile.write('ordenacao;tempo;quantidade;\n')
+
+    for order in ordenacao:
+        for sort in sort_name:
+            ord.append(f"{sort} - {order}")
+            temp = {}
+            temp["sort"] = f"{sort} - {order}"
+            for quantidade in quantidades:
+                f = open(f"executions/execution_{str(execution)}_{str(quantidade)}_{order}_{sort}.txt", "r")
+                a = (json.loads(f.read().replace("'", "\"")))
+                print(a)
+                temp["quantidade"] = a["quantidade"]
+                temp["tempo"] =  a["tempo"]
+                resultados.append(temp)
+                with open(f"result{execution}.csv", "a") as myfile:
+                    myfile.write(f'{sort} - {order};{a["tempo"]};{a["quantidade"]};\n')
+
+    print(resultados)
+    print(ord)
+    plot_comparison(f"result{execution}.csv")
+
+
+    # for quantidade in quantidades:
+    #     for order in ordenacao:
+    #         for sort in sort_name:
+    #             # print(f"executions/execution_{str(execution)}_{str(quantidade)}_{order}_{sort}.txt")
+    #             f = open(f"executions/execution_{str(execution)}_{str(quantidade)}_{order}_{sort}.txt", "r")
+    #             resultados.append(json.loads(f.read().replace("'", "\"")))
+
+    # print(resultados)
+
+    # for item in resultados:
+    #     print(item)
+    #     print(item.keys())
+    #     print(item.values())
+    # final = []
+    # print(len(resultados))
+
+
+
+    # for orde in ord:
+    #     print(orde)
+    #     # print([o for o in resultados if o['sort'] == orde])
+    #     linha = {}
+    #     linha["order"] = orde
+    #     linha["tempo"] = []
+    #     linha["quantidade"] = []
+        
+        
+    #     for o in resultados:
+    #         print(orde.strip(" "))
+    #         print(o['sort'].strip(" "))
+    #         print(o['tempo'])
+    #         if (orde.strip(" ")== o['sort'].strip(" ")):
+    #             print('SIM')
+    #             linha["tempo"].append(o['tempo'])
+    #             linha["quantidade"].append(o['quantidade'])
+        
+    #             final.append( linha )        
+
+
+    
+
+    # print(final)
+    # print(len(final))
+    
+
+
+
+        # temp_ordem = [o for o in orde if o['sort'] in ord]
+        # expectedResult = [d for d in exampleSet if d['type'] in keyValList]
+  
+
+        
 
 
 
 
-# variavaies
-quantidades = [1000,10000,100000]
-ordenacao = ["asc","random","desc"]
+
+
 
 # cria as massas para avaliação
 # for i in quantidades:
@@ -207,5 +328,10 @@ ordenacao = ["asc","random","desc"]
 sys.setrecursionlimit(max(sys.getrecursionlimit(), 101000))
 
 # Executa as avaliações e gera os gráficos
-results = evaluate_sorting_algorithms(quantidades, ordenacao)
+# results = evaluate_sorting_algorithms(quantidades, ordenacao)
+
+load_executions(quantidades, ordenacao, sort_name)
+
+
+
 # plot_results(results)
