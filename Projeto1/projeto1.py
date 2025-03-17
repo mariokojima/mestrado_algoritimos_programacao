@@ -20,7 +20,7 @@ sort_name=[
         "Quick Sort"
     ]
 # variavel de controle de execução
-execution = 3
+execution = 1
 
 
 def generate_vector(elements, order):
@@ -277,55 +277,6 @@ def load_executions(quantidades, ordenacao, sort_name):
     plot_comparison(f"result{execution}.csv")
 
 
-    # for quantidade in quantidades:
-    #     for order in ordenacao:
-    #         for sort in sort_name:
-    #             # print(f"executions/execution_{str(execution)}_{str(quantidade)}_{order}_{sort}.txt")
-    #             f = open(f"executions/execution_{str(execution)}_{str(quantidade)}_{order}_{sort}.txt", "r")
-    #             resultados.append(json.loads(f.read().replace("'", "\"")))
-
-    # print(resultados)
-
-    # for item in resultados:
-    #     print(item)
-    #     print(item.keys())
-    #     print(item.values())
-    # final = []
-    # print(len(resultados))
-
-
-
-    # for orde in ord:
-    #     print(orde)
-    #     # print([o for o in resultados if o['sort'] == orde])
-    #     linha = {}
-    #     linha["order"] = orde
-    #     linha["tempo"] = []
-    #     linha["quantidade"] = []
-        
-        
-    #     for o in resultados:
-    #         print(orde.strip(" "))
-    #         print(o['sort'].strip(" "))
-    #         print(o['tempo'])
-    #         if (orde.strip(" ")== o['sort'].strip(" ")):
-    #             print('SIM')
-    #             linha["tempo"].append(o['tempo'])
-    #             linha["quantidade"].append(o['quantidade'])
-        
-    #             final.append( linha )        
-
-
-    
-
-    # print(final)
-    # print(len(final))
-    
-
-
-
-        # temp_ordem = [o for o in orde if o['sort'] in ord]
-        # expectedResult = [d for d in exampleSet if d['type'] in keyValList]
   
 
         
@@ -345,7 +296,7 @@ def load_executions(quantidades, ordenacao, sort_name):
 # aumenta o limite de recursão
 sys.setrecursionlimit(max(sys.getrecursionlimit(), 101000))
 
-# Executa as avaliações e gera os gráficos
+# Executa as avaliações 
 # results = evaluate_sorting_algorithms(quantidades, ordenacao)
 
 load_executions(quantidades, ordenacao, sort_name)
